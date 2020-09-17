@@ -23,7 +23,7 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
     var btAdapter : BluetoothAdapter? = null
     var btSocket : BluetoothSocket? = null
 
-    var _isReading = true;
+    var _isReading = false;
     init {
         //connect()
         val bluetoothIntentFilter = IntentFilter()
@@ -49,12 +49,8 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
                     }
                 }
             }
-
         }
-
         context.registerReceiver(brReceiver,bluetoothIntentFilter)
-
-
         execute()
     }
 
@@ -66,7 +62,6 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
         while (_isReading){
             try {
                 val available = btSocket!!.inputStream.available()
-                //if (available == 0) Thread.sleep(10)
                 if (available > 0) {
                     val tmpA = available
                     do {
@@ -110,7 +105,7 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
             Output().WriteLine("Socket created")
             btSocket?.connect()
             Output().WriteLine("Socket connected")
-            //handler.sendMessage(Message.obtain(handler,3))
+            _isReading = true
             return true
         }catch (ex : IOException){
             Output().WriteLine("socket opening fail: ${ex.message}")
@@ -142,6 +137,7 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
     }
 
     fun close(){
+        _isReading = false
         try {
             btSocket?.close()
             Output().WriteLine("Socket closed")
@@ -149,9 +145,5 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
             Output().WriteLine("Socket closing fail: ${e.message}")
         }
 
-    }
-
-    fun clase(){
-        btSocket?.close()
     }
 }

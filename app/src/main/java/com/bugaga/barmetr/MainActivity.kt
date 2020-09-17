@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(startIntent)
         }
 
-
         myHandler = @SuppressLint("HandlerLeak")
             object : Handler(){
             override fun handleMessage(msg: Message) {
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     10->{
                         try {
                             val value = msg.obj.toString().toInt()
-                            mainProgress.progress = value
+                            myProgress.progress = value
                             TextValue.text = value.toString()
                         }catch (e :Exception){
                             Output().WriteLine("fail pars msg to int")
@@ -38,9 +37,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        myBt = myBluetooth(applicationContext, myHandler)
-
     }
 
+    override fun onResume() {
+        super.onResume()
+        myBt = myBluetooth(applicationContext, myHandler)
+    }
 
+    override fun onPause() {
+        super.onPause()
+        myBt?.close()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        myBt?.close()
+    }
 }
