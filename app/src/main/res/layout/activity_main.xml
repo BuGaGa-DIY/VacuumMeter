@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BT devices"
+        android:id="@+id/btDeviceBT"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/mainProgress"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="1023"
+        android:min="0"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/mainProgress"
+        android:text="100"
+        android:id="@+id/TextValue"
+        android:textSize="150dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"/>
+
+
+</RelativeLayout>
