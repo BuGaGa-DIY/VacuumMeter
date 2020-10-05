@@ -41,8 +41,7 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
                             handler.sendMessage(Message.obtain(handler,3))
                         }
                         BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
-                            Toast.makeText(context, "Device disconnected", Toast.LENGTH_SHORT)
-                                .show()
+                            //Toast.makeText(context, "Device disconnected", Toast.LENGTH_SHORT).show()
                             Output().WriteLine("Device Disconnected in Receiver")
                             handler.sendMessage(Message.obtain(handler,5))
                         }
@@ -54,29 +53,29 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
         execute()
     }
 
+    fun readBT(){
+        while (_isReading){
+            var result = ""
+            var oneChar: Char
+            try {
+                if (btSocket!!.inputStream.available()>0){
+                    do {
+                        oneChar =  btSocket!!.inputStream.read().toChar()
+                        if (oneChar != '\n' && oneChar != '\r') result += oneChar
+                    }while (oneChar != '\n')
+                    handler.sendMessage(Message.obtain(handler, 10, result))
+                }
+            }catch (ex: IOException){
+                Output().WriteLine("Read Bluetooth fail")
+            }
+        }
+    }
 
 
     @Suppress("UNREACHABLE_CODE")
     override fun doInBackground(vararg params: Void?): Void? {
         connect()
-        while (_isReading){
-            try {
-                val available = btSocket!!.inputStream.available()
-                if (available > 0) {
-                    val tmpA = available
-                    do {
-                        Thread.sleep(10)
-                    }while (tmpA != available)
-                    val tmp = ByteArray(available)
-                    btSocket!!.inputStream.read(tmp)
-                    val str = String(tmp)
-                    Output().WriteLine("Received str: ${str}")
-                    handler.sendMessage(Message.obtain(handler, 10, str))
-                }
-            }catch (e:IOException){
-                Output().WriteLine("Read Bluetooth fail")
-            }
-        }
+        readBT()
         return null
     }
 

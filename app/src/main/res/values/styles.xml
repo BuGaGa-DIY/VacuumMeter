@@ -18,9 +18,16 @@
         <item name="android:minHeight">48dip</item>
         <item name="android:maxHeight">48dip</item>
     </style>
-    <style name="Widget.ProgressBar.Vertical">
+    <style name="Widget.ProgressBar.VerticalY">
         <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/vertical_progress_bar</item>
+        <item name="android:progressDrawable">@drawable/vertical_progress_bar_yellow</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:minWidth">1dip</item>
+        <item name="android:maxWidth">12dip</item>
+    </style>
+    <style name="Widget.ProgressBar.VerticalG">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/vertical_progress_bar_green</item>
         <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
         <item name="android:minWidth">1dip</item>
         <item name="android:maxWidth">12dip</item>

@@ -7,35 +7,144 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="BT devices"
-        android:id="@+id/btDeviceBT"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"/>
+
 
     <ProgressBar
         android:layout_alignParentStart="true"
         android:layout_below="@+id/TextValue"
-        android:layout_above="@+id/btDeviceBT"
-        android:layout_marginStart="185dp"
+        android:layout_marginStart="30dp"
+        android:layout_above="@+id/MetraGroup"
         android:id="@+id/myProgress"
-        style="@style/Widget.ProgressBar.Vertical"
+        style="@style/Widget.ProgressBar.VerticalY"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:min="0"
-        android:max="1023"/>
+        android:max="4096"
+        android:progress="1000"/>
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
         android:text="100"
         android:id="@+id/TextValue"
-        android:textSize="50dp"
+        android:textSize="30dp"
         android:textColor="@android:color/black"
         android:gravity="center"/>
 
+    <ProgressBar
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/TextValue"
+        android:layout_marginStart="130dp"
+        android:layout_above="@+id/MetraGroup"
+        android:id="@+id/myProgress2"
+        style="@style/Widget.ProgressBar.VerticalG"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:min="0"
+        android:max="4096"
+        android:progress="2000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="120dp"
+        android:text="100"
+        android:id="@+id/TextValue2"
+        android:textSize="30dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"/>
+
+    <ProgressBar
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/TextValue"
+        android:layout_marginStart="250dp"
+        android:layout_above="@+id/MetraGroup"
+        android:id="@+id/myProgress3"
+        style="@style/Widget.ProgressBar.VerticalG"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:min="0"
+        android:max="4096"
+        android:progress="2000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="250dp"
+        android:text="100"
+        android:id="@+id/TextValue3"
+        android:textSize="30dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"/>
+
+    <ProgressBar
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/TextValue"
+        android:layout_marginStart="330dp"
+        android:layout_above="@+id/MetraGroup"
+        android:id="@+id/myProgress4"
+        style="@style/Widget.ProgressBar.VerticalY"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:min="0"
+        android:max="4096"
+        android:progress="2000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="330dp"
+        android:text="100"
+        android:id="@+id/TextValue4"
+        android:textSize="30dp"
+        android:textColor="@android:color/black"
+        android:gravity="center"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/MetraGroup"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        >
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Row"
+            android:id="@+id/MetraRow"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:layout_marginStart="30dp"
+            android:checked="true"
+            />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BAR"
+            android:id="@+id/MetraBar"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_marginStart="30dp"
+            />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pascal"
+            android:id="@+id/MetraPascal"
+            android:layout_gravity="end"
+            android:layout_marginStart="30dp"
+            android:layout_weight="1"
+
+            />
+    </RadioGroup>
 
 </RelativeLayout>
