@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Message
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,13 +32,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.title = "Vacuum meter"
-
-        MetraGroup.setOnCheckedChangeListener { group, checkedId ->
-            when(checkedId){
-                R.id.MetraRow -> MetraUnits = 1
-                R.id.MetraBar -> MetraUnits = 2
-                R.id.MetraPascal -> MetraUnits = 3
-            }
+        onOffSwitch1.setOnClickListener {
+            if (onOffSwitch1.isChecked) myProgress.visibility = View.VISIBLE
+            else myProgress.visibility = View.INVISIBLE
+        }
+        onOffSwitch2.setOnClickListener {
+            if (onOffSwitch2.isChecked) myProgress2.visibility = View.VISIBLE
+            else myProgress2.visibility = View.INVISIBLE
+        }
+        onOffSwitch4.setOnClickListener {
+            if (onOffSwitch4.isChecked) myProgress4.visibility = View.VISIBLE
+            else myProgress4.visibility = View.INVISIBLE
         }
 
 
