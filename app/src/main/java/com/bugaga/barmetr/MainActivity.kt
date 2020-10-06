@@ -3,6 +3,7 @@ package com.bugaga.barmetr
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -33,16 +34,47 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Vacuum meter"
         onOffSwitch1.setOnClickListener {
-            if (onOffSwitch1.isChecked) myProgress.visibility = View.VISIBLE
-            else myProgress.visibility = View.INVISIBLE
+            if (onOffSwitch1.isChecked){
+                myProgress.visibility = View.VISIBLE
+                TextValue.visibility = View.VISIBLE
+                onOffSwitch4.isEnabled = true
+                onOffSwitch2.isEnabled = true
+            }
+            else{
+                myProgress.visibility = View.INVISIBLE
+                TextValue.visibility = View.INVISIBLE
+                if (!onOffSwitch2.isChecked) onOffSwitch4.isEnabled = false
+                else if (!onOffSwitch4.isChecked) onOffSwitch2.isEnabled = false
+            }
+
         }
         onOffSwitch2.setOnClickListener {
-            if (onOffSwitch2.isChecked) myProgress2.visibility = View.VISIBLE
-            else myProgress2.visibility = View.INVISIBLE
+            if (onOffSwitch2.isChecked){
+                myProgress2.visibility = View.VISIBLE
+                TextValue2.visibility = View.VISIBLE
+                onOffSwitch1.isEnabled = true
+                onOffSwitch4.isEnabled = true
+            }
+            else{
+                myProgress2.visibility = View.INVISIBLE
+                TextValue2.visibility = View.INVISIBLE
+                if (!onOffSwitch1.isChecked) onOffSwitch4.isEnabled = false
+                else if (!onOffSwitch4.isChecked) onOffSwitch1.isEnabled = false
+            }
         }
         onOffSwitch4.setOnClickListener {
-            if (onOffSwitch4.isChecked) myProgress4.visibility = View.VISIBLE
-            else myProgress4.visibility = View.INVISIBLE
+            if (onOffSwitch4.isChecked){
+                myProgress4.visibility = View.VISIBLE
+                TextValue4.visibility = View.VISIBLE
+                onOffSwitch1.isEnabled = true
+                onOffSwitch2.isEnabled = true
+            }
+            else{
+                myProgress4.visibility = View.INVISIBLE
+                TextValue4.visibility = View.INVISIBLE
+                if (!onOffSwitch1.isChecked) onOffSwitch2.isEnabled = false
+                else if (!onOffSwitch2.isChecked) onOffSwitch1.isEnabled = false
+            }
         }
 
 
@@ -61,36 +93,28 @@ class MainActivity : AppCompatActivity() {
                             str = str.substring(str.indexOf(";") + 1)
                             val value4 = str.toInt()
                             myProgress.progress = value1
-                            //if(value1 > 500) myProgress.set
-                            TextValue.text = convertUnit(value1.toString())
+                            TextValue.text = (value1 - value3).toString()
                             myProgress2.progress = value2
-                            TextValue2.text = convertUnit(value2.toString())
+                            TextValue2.text = (value2 - value3).toString()
                             myProgress3.progress = value3
-                            TextValue3.text = convertUnit(value3.toString())
+                            TextValue3.text = value3.toString()
                             myProgress4.progress = value4
-                            TextValue4.text = convertUnit(value4.toString())
-                            /*if(sampleArray.size == 0){
-                                sampleArray.add(value1)
-                                lastReadedTime = System.currentTimeMillis()
+                            TextValue4.text = (value4 - value3).toString()
+                            val prefs = getSharedPreferences("myLocalPrefs",Context.MODE_PRIVATE)
+                            when(prefs.getInt("MatchProgressNr",0)){
+                                1->{
+                                    if (value1<value3+5 && value1>value3-5) mainLayout.setBackgroundColor(resources.getColor(R.color.MatchColor))
+                                    else mainLayout.setBackgroundColor(Color.WHITE)
+                                }
+                                2->{
+                                    if (value2<value3+5 && value2>value3-5) mainLayout.setBackgroundColor(resources.getColor(R.color.MatchColor))
+                                    else mainLayout.setBackgroundColor(Color.WHITE)
+                                }
+                                4->{
+                                    if (value4<value3+5 && value4>value3-5) mainLayout.setBackgroundColor(resources.getColor(R.color.MatchColor))
+                                    else mainLayout.setBackgroundColor(Color.WHITE)
+                                }
                             }
-                            else if (System.currentTimeMillis() - lastReadedTime > delayTime){
-                                sampleArray.add(value1)
-                            }
-
-                            if (sampleArray.size == 10){
-                                var tmp:Long = 0
-                                sampleArray.forEach { it->tmp+=it }
-                                sampleArray.clear()
-                                tmp = tmp /10
-                                myProgress.progress = value1
-                                TextValue.text = convertUnit(value1.toString())
-                            }*/
-                            /*
-                            myProgress.progress = value1
-                            myProgress2.progress = value2
-                            TextValue.text = convertUnit(value1.toString())
-                            TextValue2.text = convertUnit(value2.toString())
-                             */
                         }catch (e :Exception){
                             Output().WriteLine("fail pars msg to int, msg: ${msg.obj} msg length: ${msg.obj.toString().length}")
                         }
@@ -144,6 +168,9 @@ class MainActivity : AppCompatActivity() {
                 //Toast.makeText(this,"menu item cliced",Toast.LENGTH_SHORT).show()
                 val startIntent = Intent(applicationContext,BTDevices::class.java)
                 startActivity(startIntent)
+            }
+            R.id.matchPickerMenuItem->{
+                myAlertDialogs().showMatchDialog(this)
             }
         }
         return super.onOptionsItemSelected(item)

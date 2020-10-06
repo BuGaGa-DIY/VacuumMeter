@@ -5,7 +5,12 @@
     <item
         android:id="@+id/deviceMenuItem"
         android:title="Device"
-        app:showAsAction="always"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/matchPickerMenuItem"
+        android:title="Compare"
         />
 
 </menu>
