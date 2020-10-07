@@ -83,7 +83,8 @@
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/SwitchLayout"
         android:orientation="horizontal"
-        android:id="@+id/ProgressBarLayout">
+        android:id="@+id/ProgressBarLayout"
+        android:background="@drawable/lines">
 
         <Space
             android:layout_width="wrap_content"
@@ -103,7 +104,8 @@
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5"
+            />
 
         <ProgressBar
             android:id="@+id/myProgress2"

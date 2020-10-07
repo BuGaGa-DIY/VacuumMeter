@@ -103,16 +103,16 @@ class MainActivity : AppCompatActivity() {
                             val prefs = getSharedPreferences("myLocalPrefs",Context.MODE_PRIVATE)
                             when(prefs.getInt("MatchProgressNr",0)){
                                 1->{
-                                    if (value1<value3+5 && value1>value3-5) mainLayout.setBackgroundColor(resources.getColor(R.color.MatchColor))
-                                    else mainLayout.setBackgroundColor(Color.WHITE)
+                                    if (value1<value3+5 && value1>value3-5) mainLayout.background = getDrawable(R.drawable.lines_g)
+                                    else mainLayout.background = getDrawable(R.drawable.lines)
                                 }
                                 2->{
-                                    if (value2<value3+5 && value2>value3-5) mainLayout.setBackgroundColor(resources.getColor(R.color.MatchColor))
-                                    else mainLayout.setBackgroundColor(Color.WHITE)
+                                    if (value2<value3+5 && value2>value3-5) mainLayout.background = getDrawable(R.drawable.lines_g)
+                                    else mainLayout.background = getDrawable(R.drawable.lines)
                                 }
                                 4->{
-                                    if (value4<value3+5 && value4>value3-5) mainLayout.setBackgroundColor(resources.getColor(R.color.MatchColor))
-                                    else mainLayout.setBackgroundColor(Color.WHITE)
+                                    if (value4<value3+5 && value4>value3-5) mainLayout.background = getDrawable(R.drawable.lines_g)
+                                    else mainLayout.background = getDrawable(R.drawable.lines)
                                 }
                             }
                         }catch (e :Exception){
@@ -158,6 +158,7 @@ class MainActivity : AppCompatActivity() {
             else -> return data
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu,menu)
         return super.onCreateOptionsMenu(menu)
@@ -165,7 +166,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.deviceMenuItem->{
-                //Toast.makeText(this,"menu item cliced",Toast.LENGTH_SHORT).show()
                 val startIntent = Intent(applicationContext,BTDevices::class.java)
                 startActivity(startIntent)
             }
