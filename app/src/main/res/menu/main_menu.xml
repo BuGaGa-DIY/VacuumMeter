@@ -13,4 +13,9 @@
         android:title="Compare"
         />
 
+    <item
+        android:id="@+id/plotterMenuItem"
+        android:title="Plotter"
+        />
+
 </menu>

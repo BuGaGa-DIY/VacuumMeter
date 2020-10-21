@@ -166,14 +166,23 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.deviceMenuItem->{
-                val startIntent = Intent(applicationContext,BTDevices::class.java)
-                startActivity(startIntent)
+                startIntent(BTDevices::class.java)
             }
             R.id.matchPickerMenuItem->{
                 myAlertDialogs().showMatchDialog(this)
             }
+            R.id.plotterMenuItem->{
+                startIntent(PlotterActivity::class.java)
+            }
+
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun startIntent(intent_class : Class<*>){
+        val startIntent = Intent(applicationContext,intent_class)
+
+        startActivity(startIntent)
     }
 
     override fun onResume() {
