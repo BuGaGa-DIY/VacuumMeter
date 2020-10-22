@@ -17,11 +17,12 @@ import java.lang.Exception
 import java.nio.charset.Charset
 import java.util.*
 
-class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,Void,Void>() {
+class myBluetooth(var context: Context, var handler: Handler,val readMode : Int = 0) : AsyncTask<Void,Void,Void>() {
 
     val uuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     var btAdapter : BluetoothAdapter? = null
     var btSocket : BluetoothSocket? = null
+    //var readMode = 0
 
     var _isReading = false;
     init {
@@ -71,11 +72,33 @@ class myBluetooth(var context: Context, var handler: Handler) : AsyncTask<Void,V
         }
     }
 
+    fun readPlotter(){
+        while (_isReading){
+            val input = btSocket!!.inputStream
+            var result = ""
+            var ch : Char
+            try {
+                if(input.available() > 0){
+                    do {
+                        ch = input.read().toChar()
+                        if (ch != '\n' && ch != '\r') result += ch
+                    }while (ch != '\n')
+                    handler.sendMessage(Message.obtain(handler,11,result))
+                }
+            }catch (ioe : IOException){
+                Output().WriteLine("read plotter fail")
+            }
+        }
+    }
+
 
     @Suppress("UNREACHABLE_CODE")
     override fun doInBackground(vararg params: Void?): Void? {
         connect()
-        readBT()
+        when(readMode){
+            0->readBT()
+            1->readPlotter()
+        }
         return null
     }
 
