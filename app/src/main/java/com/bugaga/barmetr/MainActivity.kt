@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        myBt = myBluetooth(applicationContext, myHandler)
+        //myBt = myBluetooth(applicationContext, myHandler)
     }
 
     override fun onPause() {
