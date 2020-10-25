@@ -8,11 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.SeekBar
+import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.title = "Vacuum meter"
+
+        fabMain.setOnClickListener { showDialogSettings() }
         onOffSwitch1.setOnClickListener {
             if (onOffSwitch1.isChecked){
                 myProgress.visibility = View.VISIBLE
@@ -122,6 +126,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showDialogSettings() {
+        val builedr = AlertDialog.Builder(this)
+        val inflater = LayoutInflater.from(applicationContext).inflate(R.layout.settings_dialog,null)
+        inflater
+
     }
 
     private fun convertUnit(data : String):String{

@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/cord"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:id="@+id/myImageView"
-        android:layout_weight="1"/>
-    <Button
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/settingsPlotterBT"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_baseline_settings_24"
+
+        />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="100dp"
+        android:min="200"
+        android:max="800"
+        android:visibility="invisible"
+        android:id="@+id/ptxSeekBarMainLayout"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="T"
-        android:id="@+id/startBt"
-        android:layout_weight="1"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="Samples: 0"
+        android:paddingEnd="50dp"
+        android:textColor="@android:color/black"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:id="@+id/ptxLabelMainLayout"
+        android:visibility="invisible"
+        />
 
-</LinearLayout>
+
+</RelativeLayout>

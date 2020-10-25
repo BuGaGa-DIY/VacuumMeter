@@ -127,6 +127,7 @@ class myBluetooth(var context: Context, var handler: Handler,val readMode : Int 
             Output().WriteLine("Socket created")
             btSocket?.connect()
             Output().WriteLine("Socket connected")
+            sendData("GO")
             _isReading = true
             return true
         }catch (ex : IOException){
