@@ -13,20 +13,19 @@ import android.os.Message
 import android.widget.Toast
 import com.bugaga.barmetr.Output
 import java.io.IOException
+import java.io.Serializable
 import java.lang.Exception
 import java.nio.charset.Charset
 import java.util.*
 
-class myBluetooth(var context: Context, var handler: Handler,val readMode : Int = 0) : AsyncTask<Void,Void,Void>() {
+class myBluetooth(var context: Context, var handler: Handler,var readMode : Int = 0,val lateComand : String = "") : AsyncTask<Void,Void,Void>(), Serializable {
 
     val uuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     var btAdapter : BluetoothAdapter? = null
     var btSocket : BluetoothSocket? = null
-    //var readMode = 0
 
     var _isReading = false;
     init {
-        //connect()
         val bluetoothIntentFilter = IntentFilter()
         bluetoothIntentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
         bluetoothIntentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
@@ -54,6 +53,9 @@ class myBluetooth(var context: Context, var handler: Handler,val readMode : Int 
         execute()
     }
 
+    fun setMyHandler(newHandler: Handler){
+        this.handler = newHandler
+    }
     fun readBT(){
         while (_isReading){
             var result = ""
@@ -95,6 +97,7 @@ class myBluetooth(var context: Context, var handler: Handler,val readMode : Int 
     @Suppress("UNREACHABLE_CODE")
     override fun doInBackground(vararg params: Void?): Void? {
         connect()
+        if(lateComand != "") sendData(lateComand)
         when(readMode){
             0->readBT()
             1->readPlotter()
@@ -127,7 +130,7 @@ class myBluetooth(var context: Context, var handler: Handler,val readMode : Int 
             Output().WriteLine("Socket created")
             btSocket?.connect()
             Output().WriteLine("Socket connected")
-            sendData("GO")
+            //sendData("GO")
             _isReading = true
             return true
         }catch (ex : IOException){
@@ -161,12 +164,12 @@ class myBluetooth(var context: Context, var handler: Handler,val readMode : Int 
 
     fun close(){
         _isReading = false
+
         try {
             btSocket?.close()
             Output().WriteLine("Socket closed")
         }catch (e : Exception){
             Output().WriteLine("Socket closing fail: ${e.message}")
         }
-
     }
 }

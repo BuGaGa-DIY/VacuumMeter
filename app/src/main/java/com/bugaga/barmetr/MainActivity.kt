@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                             str = str.substring(str.indexOf(";") + 1)
                             val value3 = str.substring(0,str.indexOf(";")).toInt()
                             str = str.substring(str.indexOf(";") + 1)
-                            val value4 = str.toInt()
+                            val value4 = str.substring(0,str.indexOf(";")).toInt()
                             myProgress.progress = value1
                             TextValue.text = (value1 - value3).toString()
                             myProgress2.progress = value2
@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity() {
                         }catch (e :Exception){
                             Output().WriteLine("fail pars msg to int, msg: ${msg.obj} msg length: ${msg.obj.toString().length}")
                         }
+                        myBt?.sendData("GO")
                     }
                 }
             }
@@ -183,22 +184,22 @@ class MainActivity : AppCompatActivity() {
                 myAlertDialogs().showMatchDialog(this)
             }
             R.id.plotterMenuItem->{
-                startIntent(PlotterActivity::class.java)
+                startIntent(PlotterActivity::class.java,true)
             }
 
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun startIntent(intent_class : Class<*>){
+    fun startIntent(intent_class : Class<*>, putBT : Boolean = false){
         val startIntent = Intent(applicationContext,intent_class)
-
+        //if (putBT) startIntent.putExtra("BluetoothClass",myBt)
         startActivity(startIntent)
     }
 
     override fun onResume() {
         super.onResume()
-        //myBt = myBluetooth(applicationContext, myHandler)
+        myBt = myBluetooth(applicationContext, myHandler, lateComand = "cmd:1;GO")
     }
 
     override fun onPause() {

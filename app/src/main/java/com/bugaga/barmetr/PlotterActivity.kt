@@ -68,21 +68,15 @@ class PlotterActivity : AppCompatActivity() {
                         11->{
                             val koef = myImageView.height.toFloat() / 4096f
                             var myData = msg.obj.toString()
-                            //Output().WriteLine("koef: ${koef}")
-                            var cnt = 0;
-                            //var ptxArr = floatArrayOf()
                             var ptxArr = ArrayList<Float>()
                             if (myData.indexOf(";") == 0) myData = myData.substring(1)
                             while (myData.indexOf(";") >= 0){
                                 val ind = myData.indexOf(";")
-                                //Output().WriteLine("Data added: ${myData.substring(0,ind).toFloat()}")
-                                //ptxArr[cnt++] = myData.substring(0,ind).toFloat()
                                 var tmp = myData.substring(0,ind).toFloat()
                                 tmp *= koef
                                 ptxArr.add( tmp)
                                 myData = myData.substring(ind+1)
                             }
-
                             if (ptxArr.size > 5) drawFrame(ptxArr)
                         }
                     }
@@ -92,7 +86,6 @@ class PlotterActivity : AppCompatActivity() {
 
     private fun drawFrame(ptxArr: ArrayList<Float>) {
         val xStep = myImageView.width.toFloat() / ptxArr.size
-        //val fullPtxArr = floatArrayOf()
         val fullPtxArr = ArrayList<Float>()
         val dif = (myImageView.height.toFloat() - ptxArr.max()!!.toFloat()) / 2f
         for (i in 1 until ptxArr.size-1){
@@ -143,7 +136,7 @@ class PlotterActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        plotterBt = myBluetooth(applicationContext, plotterHandler,1)
+        plotterBt = myBluetooth(applicationContext, plotterHandler,1,"cmd:2;GO")
     }
 
     override fun onDestroy() {
