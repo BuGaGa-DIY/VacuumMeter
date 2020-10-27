@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.plotter_config_alert.view.*
 import kotlinx.android.synthetic.main.plotter_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 import kotlin.random.Random.Default.nextInt
 
 
@@ -88,6 +89,7 @@ class PlotterActivity : AppCompatActivity() {
         val xStep = myImageView.width.toFloat() / ptxArr.size
         val fullPtxArr = ArrayList<Float>()
         val dif = (myImageView.height.toFloat() - ptxArr.max()!!.toFloat()) / 2f
+        val avarg = ptxArr.max()!!.minus(ptxArr.min()!!)
         for (i in 1 until ptxArr.size-1){
             fullPtxArr.add(xStep*(i-1))
             fullPtxArr.add(myImageView.height - ptxArr[i-1] - dif)
@@ -98,6 +100,11 @@ class PlotterActivity : AppCompatActivity() {
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.TRANSPARENT)
         canvas.drawLines(fullPtxArr.toFloatArray(),paint)
+        canvas.drawLine(50f,avarg-dif,myImageView.width.toFloat(),avarg-dif,paint)
+        paint.strokeWidth = 0.5f
+        paint.textSize = 45f
+        canvas.drawText("${avarg.roundToInt()}",0f,avarg,paint)
+        paint.strokeWidth = 3f
         myImageView.setImageBitmap(bitmap)
         plotterBt?.sendData("GO")
     }
