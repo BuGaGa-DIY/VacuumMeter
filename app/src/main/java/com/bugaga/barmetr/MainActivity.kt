@@ -199,7 +199,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        myBt = myBluetooth(applicationContext, myHandler, lateComand = "cmd:1;GO")
+        myBt = myBluetooth(applicationContext, myHandler, lateComand = "cmd;p:4;d:10;GO")
     }
 
     override fun onPause() {

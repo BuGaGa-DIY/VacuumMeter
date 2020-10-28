@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.plotter_config_alert.view.*
 import kotlinx.android.synthetic.main.plotter_layout.*
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
@@ -23,8 +24,8 @@ class PlotterActivity : AppCompatActivity() {
     private var plotterBt : myBluetooth? = null
     var plotterHandler = Handler()
     val paint = Paint()
-
     var configPtxDalaySelextor = -1
+    var autoSet = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.plotter_layout)
@@ -33,6 +34,10 @@ class PlotterActivity : AppCompatActivity() {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 5F
         paint.isAntiAlias = true
+
+        setAuto.setOnCheckedChangeListener { buttonView, isChecked ->
+            autoSet = isChecked
+        }
 
         settingsPlotterBT.setOnClickListener{
             floatingBT()
@@ -67,18 +72,23 @@ class PlotterActivity : AppCompatActivity() {
                 override fun handleMessage(msg: Message) {
                     when(msg.what){
                         11->{
-                            val koef = myImageView.height.toFloat() / 4096f
-                            var myData = msg.obj.toString()
-                            var ptxArr = ArrayList<Float>()
-                            if (myData.indexOf(";") == 0) myData = myData.substring(1)
-                            while (myData.indexOf(";") >= 0){
-                                val ind = myData.indexOf(";")
-                                var tmp = myData.substring(0,ind).toFloat()
-                                tmp *= koef
-                                ptxArr.add( tmp)
-                                myData = myData.substring(ind+1)
-                            }
-                            if (ptxArr.size > 5) drawFrame(ptxArr)
+                            try {
+
+                                val koef = myImageView.height.toFloat() / 4096f
+                                var myData = msg.obj.toString()
+                                var ptxArr = ArrayList<Float>()
+                                if (myData.indexOf(";") == 0) myData = myData.substring(1)
+                                val splitedData = myData.split(";")
+                                splitedData.forEach { if(it != "") ptxArr.add(it.toFloat()*koef) }
+                                /*while (myData.indexOf(";") >= 0){
+                                    val ind = myData.indexOf(";")
+                                    var tmp = myData.substring(0,ind).toFloat()
+                                    tmp *= koef
+                                    ptxArr.add( tmp)
+                                    myData = myData.substring(ind+1)
+                                }*/
+                                if (ptxArr.size > 5) drawFrame(ptxArr)
+                            }catch (ex : Exception){Output().WriteLine("Parsing data fail: $ex")}
                         }
                     }
                 }
@@ -86,14 +96,32 @@ class PlotterActivity : AppCompatActivity() {
     }
 
     private fun drawFrame(ptxArr: ArrayList<Float>) {
+        var startIndex = 1
+        if (autoSet){
+            var max = 0f
+            var cnt = 1
+            var got = 0
+            do {
+                if (ptxArr[cnt] > max) {
+                    max = ptxArr[cnt]
+                    startIndex = cnt
+                    got = 0
+                    cnt++
+                }else{
+                    got++
+                    cnt++
+                }
+            }while (cnt<ptxArr.size && got < 15)
+            //Output().WriteLine("Custom startIndex: $startIndex")
+        }
         val xStep = myImageView.width.toFloat() / ptxArr.size
         val fullPtxArr = ArrayList<Float>()
         val dif = (myImageView.height.toFloat() - ptxArr.max()!!.toFloat()) / 2f
         val avarg = ptxArr.max()!!.minus(ptxArr.min()!!)
-        for (i in 1 until ptxArr.size-1){
-            fullPtxArr.add(xStep*(i-1))
+        for (i in startIndex until ptxArr.size-1){
+            fullPtxArr.add(xStep*(i-startIndex))
             fullPtxArr.add(myImageView.height - ptxArr[i-1] - dif)
-            fullPtxArr.add(xStep*i)
+            fullPtxArr.add(xStep*(i-startIndex+1))
             fullPtxArr.add(myImageView.height - ptxArr[i] - dif)
         }
         val bitmap = Bitmap.createBitmap(myImageView.width, myImageView.height, Bitmap.Config.ARGB_8888)
@@ -143,7 +171,7 @@ class PlotterActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        plotterBt = myBluetooth(applicationContext, plotterHandler,1,"cmd:2;GO")
+        plotterBt = myBluetooth(applicationContext, plotterHandler,1,"cmd;p:400;d:100;GO")
     }
 
     override fun onDestroy() {
