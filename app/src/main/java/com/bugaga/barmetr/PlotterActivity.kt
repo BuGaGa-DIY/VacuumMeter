@@ -3,21 +3,16 @@ package com.bugaga.barmetr
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.View
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.plotter_config_alert.view.*
 import kotlinx.android.synthetic.main.plotter_layout.*
 import java.lang.Exception
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
-import kotlin.random.Random.Default.nextInt
 
 
 class PlotterActivity : AppCompatActivity() {
@@ -74,20 +69,17 @@ class PlotterActivity : AppCompatActivity() {
                         11->{
                             try {
 
-                                val koef = myImageView.height.toFloat() / 4096f
+                                val koef = myImageView.height.toFloat() / 4096f//
                                 var myData = msg.obj.toString()
-                                var ptxArr = ArrayList<Float>()
+                                var ptxArrA = ArrayList<Float>()
+                                var ptxArrB = ArrayList<Float>()
+                                //var ptxArrB = ArrayList<Float>()
                                 if (myData.indexOf(";") == 0) myData = myData.substring(1)
                                 val splitedData = myData.split(";")
-                                splitedData.forEach { if(it != "") ptxArr.add(it.toFloat()*koef) }
-                                /*while (myData.indexOf(";") >= 0){
-                                    val ind = myData.indexOf(";")
-                                    var tmp = myData.substring(0,ind).toFloat()
-                                    tmp *= koef
-                                    ptxArr.add( tmp)
-                                    myData = myData.substring(ind+1)
-                                }*/
-                                if (ptxArr.size > 5) drawFrame(ptxArr)
+                                for (i in 0..splitedData.size/2) ptxArrA.add(splitedData[i].toFloat()*koef)
+                                for (i in splitedData.size/2 until splitedData.size) if(splitedData[i] != "") ptxArrB.add(splitedData[i].toFloat()*koef)
+                                //splitedData.forEach { if(it != "") ptxArr.add(it.toFloat()*koef) }
+                                if (ptxArrA.size > 5) drawFrame(ptxArrA,ptxArrB)
                             }catch (ex : Exception){Output().WriteLine("Parsing data fail: $ex")}
                         }
                     }
@@ -95,15 +87,15 @@ class PlotterActivity : AppCompatActivity() {
             }
     }
 
-    private fun drawFrame(ptxArr: ArrayList<Float>) {
+    private fun drawFrame(ptxArrA: ArrayList<Float>,ptxArrB: ArrayList<Float>) {
         var startIndex = 1
         if (autoSet){
             var max = 0f
             var cnt = 1
             var got = 0
             do {
-                if (ptxArr[cnt] > max) {
-                    max = ptxArr[cnt]
+                if (ptxArrA[cnt] > max) {
+                    max = ptxArrA[cnt]
                     startIndex = cnt
                     got = 0
                     cnt++
@@ -111,23 +103,41 @@ class PlotterActivity : AppCompatActivity() {
                     got++
                     cnt++
                 }
-            }while (cnt<ptxArr.size && got < 15)
+            }while (cnt<ptxArrA.size && got < 15)
             //Output().WriteLine("Custom startIndex: $startIndex")
         }
-        val xStep = myImageView.width.toFloat() / ptxArr.size
-        val fullPtxArr = ArrayList<Float>()
-        val dif = (myImageView.height.toFloat() - ptxArr.max()!!.toFloat()) / 2f
-        val avarg = ptxArr.max()!!.minus(ptxArr.min()!!)
-        for (i in startIndex until ptxArr.size-1){
-            fullPtxArr.add(xStep*(i-startIndex))
-            fullPtxArr.add(myImageView.height - ptxArr[i-1] - dif)
-            fullPtxArr.add(xStep*(i-startIndex+1))
-            fullPtxArr.add(myImageView.height - ptxArr[i] - dif)
+        val xStep = myImageView.width.toFloat() / (ptxArrA.size)
+        val fullPtxArrA = ArrayList<Float>()
+        val fullPtxArrB = ArrayList<Float>()
+        val dif = (myImageView.height.toFloat() - ptxArrA.max()!!.toFloat()) / 2f
+        val avarg = ptxArrB.max()!!.minus(ptxArrB.min()!!)
+        //Original for 1 array;
+        for (i in startIndex until (ptxArrA.size-1)){
+            fullPtxArrA.add(xStep*(i-startIndex))
+            fullPtxArrA.add(myImageView.height - ptxArrA[i-1] - dif)
+            fullPtxArrA.add(xStep*(i-startIndex+1))
+            fullPtxArrA.add(myImageView.height - ptxArrA[i] - dif)
         }
+        for (i in startIndex until (ptxArrB.size-1)){
+            fullPtxArrB.add(xStep*(i-startIndex))
+            fullPtxArrB.add(myImageView.height - ptxArrB[i-1] - dif)
+            fullPtxArrB.add(xStep*(i-startIndex+1))
+            fullPtxArrB.add(myImageView.height - ptxArrB[i] - dif)
+        }
+        /*startIndex = (ptxArr.size-1)/2+1
+        for (i in (ptxArr.size-1)/2+1 until ptxArr.size-1){
+            fullPtxArrB.add(xStep*(i-startIndex))
+            fullPtxArrB.add(myImageView.height - ptxArr[i-1] - dif)
+            fullPtxArrB.add(xStep*(i-startIndex+1))
+            fullPtxArrB.add(myImageView.height - ptxArr[i] - dif)
+        }*/
         val bitmap = Bitmap.createBitmap(myImageView.width, myImageView.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.TRANSPARENT)
-        canvas.drawLines(fullPtxArr.toFloatArray(),paint)
+        paint.color = Color.BLUE
+        canvas.drawLines(fullPtxArrA.toFloatArray(),paint)
+        paint.color = Color.YELLOW
+        canvas.drawLines(fullPtxArrB.toFloatArray(),paint)
         canvas.drawLine(50f,avarg-dif,myImageView.width.toFloat(),avarg-dif,paint)
         paint.strokeWidth = 0.5f
         paint.textSize = 45f
