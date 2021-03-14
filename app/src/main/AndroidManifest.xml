@@ -14,10 +14,11 @@
         android:roundIcon="@mipmap/engine_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".PlotterActivity"
-            android:theme="@style/PlotterTheme"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/PlotterTheme" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BTDevices" />
+        <activity android:name=".mainCanvasActivity"/>
     </application>
 
 </manifest>

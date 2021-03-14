@@ -29,7 +29,6 @@ class PlotterActivity : AppCompatActivity() {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 5F
         paint.isAntiAlias = true
-
         setAuto.setOnCheckedChangeListener { buttonView, isChecked ->
             autoSet = isChecked
         }

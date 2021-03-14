@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Vacuum meter"
 
+        startIntent(mainCanvasActivity::class.java)
         fabMain.setOnClickListener { showDialogSettings() }
         onOffSwitch1.setOnClickListener {
             if (onOffSwitch1.isChecked){
@@ -130,9 +131,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDialogSettings() {
-        val builedr = AlertDialog.Builder(this)
-        val inflater = LayoutInflater.from(applicationContext).inflate(R.layout.settings_dialog,null)
-        inflater
+
+        startIntent(mainCanvasActivity::class.java)
 
     }
 
