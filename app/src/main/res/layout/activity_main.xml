@@ -220,6 +220,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_baseline_settings_24"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+         />
 
 </RelativeLayout>
