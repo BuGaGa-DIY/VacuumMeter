@@ -11,14 +11,12 @@ import android.os.AsyncTask
 import android.os.Handler
 import android.os.Message
 import android.widget.Toast
-import com.bugaga.barmetr.Output
 import java.io.IOException
 import java.io.Serializable
 import java.lang.Exception
-import java.nio.charset.Charset
 import java.util.*
 
-class myBluetooth(var context: Context, var handler: Handler,var readMode : Int = 0,val lateComand : String = "") : AsyncTask<Void,Void,Void>(), Serializable {
+class myBluetooth(var context: Context, var handler: Handler,var readMode : Int = 0,val lateCommand : String = "") : AsyncTask<Void,Void,Void>(), Serializable {
 
     val uuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     var btAdapter : BluetoothAdapter? = null
@@ -97,7 +95,7 @@ class myBluetooth(var context: Context, var handler: Handler,var readMode : Int 
     @Suppress("UNREACHABLE_CODE")
     override fun doInBackground(vararg params: Void?): Void? {
         connect()
-        if(lateComand != "") sendData(lateComand)
+        if(lateCommand != "") sendData(lateCommand)
         when(readMode){
             0->readBT()
             1->readPlotter()
@@ -128,15 +126,15 @@ class myBluetooth(var context: Context, var handler: Handler,var readMode : Int 
         try {
             btSocket = device.createInsecureRfcommSocketToServiceRecord(uuid)
             Output().WriteLine("Socket created")
-            btSocket?.connect()
+            btSocket!!.connect()
             Output().WriteLine("Socket connected")
             //sendData("GO")
             _isReading = true
-            return true
         }catch (ex : IOException){
             Output().WriteLine("socket opening fail: ${ex.message}")
             return false
         }
+        return true
     }
 
     fun sendData(data : String){

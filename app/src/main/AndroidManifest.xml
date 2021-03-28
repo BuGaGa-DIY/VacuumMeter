@@ -19,7 +19,7 @@
             android:name=".PlotterActivity"
             android:screenOrientation="landscape"
             android:theme="@style/PlotterTheme" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".mainCanvasActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BTDevices" />
-        <activity android:name=".mainCanvasActivity"/>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>

@@ -3,18 +3,14 @@ package com.bugaga.barmetr
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.SeekBar
-import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 
@@ -199,7 +195,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        myBt = myBluetooth(applicationContext, myHandler, lateComand = "cmd;p:4;d:10;GO")
+        myBt = myBluetooth(applicationContext, myHandler, lateCommand = "cmd;p:4;d:10;GO")
     }
 
     override fun onPause() {
